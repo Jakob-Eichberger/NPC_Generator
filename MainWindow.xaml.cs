@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -31,7 +32,9 @@ namespace NPC_Generator
         public MainWindow()
         {
             InitializeComponent();
-            TBAmount.Text = "1";
+            TBAmount.Text = Properties.Settings.Default.amount;
+            TBInputText.Text = Properties.Settings.Default.input;
+
         }
 
         private void TBAmount_TextChanged(object sender, TextChangedEventArgs e)
@@ -59,6 +62,8 @@ namespace NPC_Generator
                         TBAmount.Foreground = new SolidColorBrush(Colors.Black);
                         BtnGo.IsEnabled = true;
                         LbLInfo.Content = "";
+                        Properties.Settings.Default.amount = TBAmount.Text;
+                        Properties.Settings.Default.Save();
                     }
                 }
             }
@@ -83,7 +88,11 @@ namespace NPC_Generator
 
         private void BtnGo_Click(object sender, RoutedEventArgs e)
         {
+            BtnGo.IsEnabled = false;
             PB.Visibility = Visibility.Visible;
+            PB.Minimum = 0;
+            int amount = Convert.ToInt32(TBAmount.Text);
+            PB.Maximum = amount;
             Result = new();
             Variables = new();
             InputText = TBInputText.Text.ToString();
@@ -92,7 +101,6 @@ namespace NPC_Generator
                 Variables.Add(match.Value.Replace("{", "").Replace("}", ""));
             }
             //Variables.ForEach(x => { MessageBox.Show(x); });
-            int amount = Convert.ToInt32(TBAmount.Text);
             Thread th = new Thread(() =>
             {
                 try
@@ -100,11 +108,22 @@ namespace NPC_Generator
 
                     for (int i = 0; i < amount; i++)
                     {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            PB.Value = i;
+                        }));
                         GenerateSentence();
                     }
                     var s = String.Join(System.Environment.NewLine, Result.ToArray());
-                    //File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\Result.txt",s);
-                    MessageBox.Show(s);
+                    File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\Result.txt", s);
+                    
+                    
+                   MessageBoxResult r = MessageBox.Show(amount == 1 ? "The single sentence has been generated! Would you like to open the result file now?" : $"All {amount.ToString()} sentences have been generated! Would you like to open the result file now?", "Question", MessageBoxButton.YesNo,MessageBoxImage.Question);
+                    if (MessageBoxResult.Yes == r)
+                    {
+                        Process.Start("Notepad.exe", $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\Result.txt");
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -115,6 +134,7 @@ namespace NPC_Generator
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
                         PB.Visibility = Visibility.Collapsed;
+                        BtnGo.IsEnabled = true;
                     }));
                 }
             });
@@ -129,17 +149,22 @@ namespace NPC_Generator
             //
             foreach (var currentVar in Variables)
             {
-                InputText = InputText.Replace($"{{{currentVar}}}", GetOneVarFromFile(currentVar));
+                temp = temp.Replace($"{{{currentVar}}}", GetOneVarFromFile(currentVar));
             }
-            Result.Add(InputText);
-
+            Result.Add(Regex.Replace(temp, @"\s+", " "));
         }
+
         private string GetOneVarFromFile(string FileName)
         {
             var x = File.ReadAllText($"{Directory.GetCurrentDirectory()}\\Options\\{FileName}.txt").Split(Environment.NewLine).ToList();
-            ran = new Random(DateTime.Now.Millisecond);
-            Thread.Sleep(100);
-            return x[ran.Next(0, x.Count)];
+            var i = x[ran.Next(0, x.Count)];
+            return i;
+        }
+
+        private void TBInputText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+             Properties.Settings.Default.input = TBInputText.Text;
+            Properties.Settings.Default.Save();
         }
     }
 }

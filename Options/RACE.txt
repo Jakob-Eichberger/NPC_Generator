@@ -1,7 +1,7 @@
-﻿mine
-word
-is
-doch
-eine
-tolle
-sache
+human
+elf
+dwarf
+halfling
+tiefling
+kender
+gnome

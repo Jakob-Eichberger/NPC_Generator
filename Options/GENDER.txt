@@ -1,7 +1,3 @@
-﻿mine
-word
-is
-doch
-eine
-tolle
-sache
+male
+female
+other

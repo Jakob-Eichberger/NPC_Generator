@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NPC_Generator"
         mc:Ignorable="d"
-        Title="MainWindow"  SizeToContent="WidthAndHeight">
+        Title="NPCGen"  SizeToContent="WidthAndHeight">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
@@ -19,12 +19,12 @@
             
         </Grid.RowDefinitions>
         <Label Content="Input Text: " Grid.Row="0" Grid.Column="0" Margin="10,5,0,5"/>
-        <TextBox Name="TBInputText" MinWidth="400" MaxHeight="50" Grid.Row="0" Grid.Column="1" Margin="10,5,5,5"/>
+        <TextBox Name="TBInputText" MinWidth="400" MaxHeight="50" Grid.Row="0" Grid.Column="1" Margin="10,5,5,5" TextChanged="TBInputText_TextChanged"/>
         <Label Content="Amount: " Grid.Row="1" Grid.Column="0" Margin="10,0,0,5"/>
         <TextBox MinWidth="50" Name="TBAmount" Grid.Row="1" Grid.Column="1" Margin="10,0,5,5" TextChanged="TBAmount_TextChanged" />
         <Button Name="BtnGo" Content="Generate" Grid.Row="2" Grid.Column="0" Margin="10,0,0,5" Click="BtnGo_Click"/>
         <Label Name="LbLInfo" Content="" Grid.Row="2" Grid.Column="1" Margin="10,0,0,5" Foreground="Red"/>
         <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="1" Margin="10,0,0,5" Content="Option's Folder" Name="BtnOptionsFolder" Click="BtnOptionsFolder_Click"/>
-        <ProgressBar Grid.Row="3" Grid.Column="1" Visibility="Collapsed" Margin="10,0,5,5" Name="PB"  IsIndeterminate="True"/>
+        <ProgressBar Grid.Row="3" Grid.Column="1" Visibility="Collapsed" Margin="10,0,5,5" Name="PB"  IsIndeterminate="False"/>
     </Grid>
 </Window>

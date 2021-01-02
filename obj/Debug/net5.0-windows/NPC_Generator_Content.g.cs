@@ -8,6 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("options/face.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("options/hair.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("options/names.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("options/race.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("options/gender.txt")]
 
