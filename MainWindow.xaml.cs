@@ -114,7 +114,7 @@ namespace NPC_Generator
                         }));
                         GenerateSentence();
                     }
-                    var s = String.Join(System.Environment.NewLine, Result.ToArray());
+                    var s = String.Join(System.Environment.NewLine, Result.ToHashSet().ToArray());
                     File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\Result.txt", s);
                     
                     
@@ -152,6 +152,7 @@ namespace NPC_Generator
                 temp = temp.Replace($"{{{currentVar}}}", GetOneVarFromFile(currentVar));
             }
             Result.Add(Regex.Replace(temp, @"\s+", " "));
+           
         }
 
         private string GetOneVarFromFile(string FileName)

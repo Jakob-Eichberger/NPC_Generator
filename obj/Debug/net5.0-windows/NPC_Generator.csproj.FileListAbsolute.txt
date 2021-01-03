@@ -50,3 +50,5 @@ C:\Users\jakob\Documents\GitHub\NPC_Generator\obj\Debug\net5.0-windows\NPC_Gener
 C:\Users\jakob\Documents\GitHub\NPC_Generator\bin\Debug\net5.0-windows\Options\FACE.txt
 C:\Users\jakob\Documents\GitHub\NPC_Generator\bin\Debug\net5.0-windows\Options\HAIR.txt
 C:\Users\jakob\Documents\GitHub\NPC_Generator\bin\Debug\net5.0-windows\Options\NAMES.txt
+C:\Users\jakob\Documents\GitHub\NPC_Generator\bin\Debug\net5.0-windows\Properties\Settings.settings
+C:\Users\jakob\Documents\GitHub\NPC_Generator\obj\Debug\net5.0-windows\NPC_Generator.csprojAssemblyReference.cache
