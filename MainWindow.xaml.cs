@@ -71,6 +71,7 @@ namespace NPC_Generator
             }
             catch (System.ComponentModel.Win32Exception)
             {
+                Clipboard.SetText($"{ Directory.GetCurrentDirectory()}\\Options");
                 MessageBox.Show($"Sorry some error occourd\n If the folder exists you can find it here: { Directory.GetCurrentDirectory()}\\Options");
             }
 
@@ -90,46 +91,40 @@ namespace NPC_Generator
             {
                 Variables.Add(match.Value.Replace("{", "").Replace("}", ""));
             }
-            //Variables.ForEach(x => { MessageBox.Show(x); });
-            Thread th = new Thread(() =>
-            {
-                try
-                {
+            new Thread(() =>
+               {
+                   try
+                   {
+                       for (int i = 0; i < amount; i++)
+                       {
+                           Dispatcher.BeginInvoke(new Action(() =>
+                           {
+                               PB.Value = i;
+                           }));
+                           GenerateSentence();
+                       }
+                       var s = String.Join(System.Environment.NewLine, Result.ToHashSet().ToArray());
+                       File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\Result.txt", s);
 
-                    for (int i = 0; i < amount; i++)
-                    {
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            PB.Value = i;
-                        }));
-                        GenerateSentence();
-                    }
-                    var s = String.Join(System.Environment.NewLine, Result.ToHashSet().ToArray());
-                    File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\Result.txt", s);
-
-
-                    MessageBoxResult r = MessageBox.Show(amount == 1 ? "The single sentence has been generated! Would you like to open the result file now?" : $"All {amount.ToString()} sentences have been generated! Would you like to open the result file now?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (MessageBoxResult.Yes == r)
-                    {
-                        Process.Start("Notepad.exe", $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\Result.txt");
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Sorry something went wrong!\n" + ex.Message);
-                }
-                finally
-                {
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        PB.Visibility = Visibility.Collapsed;
-                        BtnGo.IsEnabled = true;
-                    }));
-                }
-            });
-            th.Start();
-
+                       MessageBoxResult r = MessageBox.Show(amount == 1 ? "The single sentence has been generated! Would you like to open the result file now?" : $"All {amount.ToString()} sentences have been generated! Would you like to open the result file now?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                       if (MessageBoxResult.Yes == r)
+                       {
+                           Process.Start("Notepad.exe", $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\Result.txt");
+                       }
+                   }
+                   catch (Exception ex)
+                   {
+                       MessageBox.Show("Sorry something went wrong!\n" + ex.Message);
+                   }
+                   finally
+                   {
+                       Dispatcher.BeginInvoke(new Action(() =>
+                       {
+                           PB.Visibility = Visibility.Collapsed;
+                           BtnGo.IsEnabled = true;
+                       }));
+                   }
+               }).Start();
         }
 
         private void GenerateSentence()
@@ -156,6 +151,11 @@ namespace NPC_Generator
         {
             Properties.Settings.Default.input = TBInputText.Text;
             Properties.Settings.Default.Save();
+        }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Use {Head} in input text box if you want {Head} replaces with an Item from a file called Head.txt. You can find the Folder to put said file when you click 'options Folder'. One row is one item. ");
         }
     }
 }

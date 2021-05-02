@@ -16,8 +16,12 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
-            
         </Grid.RowDefinitions>
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Help" Click="Help_Click"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
         <Label Content="Input Text: " Grid.Row="0" Grid.Column="0" Margin="10,5,0,5"/>
         <TextBox Name="TBInputText" MinWidth="400" MaxHeight="50" Grid.Row="0" Grid.Column="1" Margin="10,5,5,5" TextChanged="TBInputText_TextChanged"/>
         <Label Content="Amount: " Grid.Row="1" Grid.Column="0" Margin="10,0,0,5"/>
