@@ -1,0 +1,7 @@
+human
+elf
+dwarf
+halfling
+tiefling
+kender
+gnome
